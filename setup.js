@@ -7,6 +7,8 @@ const read = require('./read');
 const shell = require('./shell');
 const styles = require('./styles');
 
+const initialState = require('./state.example.json');
+
 module.exports = async function setup () {
 
   if (await fs.exists(config.CLI_CONFIG)) {
@@ -38,5 +40,9 @@ module.exports = async function setup () {
   await serverConfig.init();
 
   console.log(styles.good(`Wrote installation info to ${config.CLI_CONFIG}.\n`));
+
+  console.log(styles.info('Writing initial state...\n'));
+
+  await fs.writeFile(path.join(installPath, 'state.json'), JSON.stringify(initialState, null, 2));
 
 }
