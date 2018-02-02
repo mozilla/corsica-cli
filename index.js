@@ -5,6 +5,7 @@ const {version} = require('./package.json');
 const setup = require('./setup');
 const style = require('./styles');
 const shell = require('./shell');
+const plugins = require('./plugins');
 const lifecycle = require('./lifecycle');
 const serverConfig = require('./config-server');
 const cliConfig = require('./config-cli');
@@ -14,7 +15,6 @@ function helpful (fn) {
   return async function (...args) {
     try {
       await fn(...args);
-      console.log(style.good('Done!'));
     } catch (e) {
       console.error(`
 ${style.bad('Something Went Wrong!')}
@@ -42,6 +42,8 @@ program.command('setup')
 
     await setup();
 
+    console.log(style.good('Done!'));
+
   }));
 
 program.command('start')
@@ -64,25 +66,37 @@ program.command('stop')
 
     await lifecycle.stop();
 
+    console.log(style.good('Done!'));
+
   }));
 
 program.command('add-plugin [name]')
   .description('install a plugin')
   .action(helpful(async function (name) {
 
-    let { installPath } = await cliConfig.get();
-
     console.log(style.info(`Installing ${name}...\n`));
 
-    await shell('npm', ['install', name], { cwd: installPath });
+    await plugins.install(name);
 
-    let cfg = await serverConfig.get();
+    console.log(style.good('Done!'));
 
-    if (cfg.plugins.indexOf(name) === -1) {
-      cfg.plugins.push(name);
-    }
+  }));
 
-    await serverConfig.set('plugins', cfg.plugins);
+program.command('remove-plugin [name]')
+  .description('remove an installed plugin')
+  .action(helpful(async function (name) {
+
+    await plugins.remove(name);
+
+    console.log(style.good('Done!'));
+
+  }));
+
+program.command('list-plugins')
+  .description('list installed plugins')
+  .action(helpful(async function () {
+
+    await plugins.list();
 
   }));
 
@@ -95,6 +109,8 @@ program.command('update')
     console.log(style.info('Updating...'));
 
     await shell('npm', ['update'], { cwd: installPath });
+
+    console.log(style.good('Done!'));
 
   }));
 

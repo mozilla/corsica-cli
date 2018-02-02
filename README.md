@@ -24,7 +24,11 @@ Corsica's power and flexibility comes from its plugins. The Corsica CLI includes
 
 [See a list of Corsica plugins](https://www.npmjs.com/browse/keyword/corsica)
 
-To install a plugin (such as corsica-image), run `corsica add-plugin corsica-image`. This will download the plugin and register it with the server.
+To install a plugin, run `corsica add-plugin [name of plugin]`. This will download the plugin and register it with the server.
+
+To remove a plugin, run `corsica remove-plugin [name of plugin]`. This will remove the code and un-register the plugin with the server.
+
+You can see a list of both built-in and downloaded plugins by running `corsica list-plugins`.
 
 ## Updates
 
@@ -32,4 +36,4 @@ To update both the server software and plugins to their latest versions, run `co
 
 ## Troubleshooting
 
-When there are errors, the tool tries to give helpful information when it can. If you file an issue, please include all the error output provided if possible.
+When there are errors, the tool tries to give helpful information when it can. If you [file an issue](https://github.com/mozilla/corsica-cli/issues), please include all the error output provided if possible.
