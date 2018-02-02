@@ -13,7 +13,7 @@ async function getConfigPath() {
 }
 
 async function init() {
-  await fs.writeFile(await getConfigPath(), JSON.stringify(defaultConfig));
+  await fs.writeFile(await getConfigPath(), JSON.stringify(defaultConfig, null, 2));
 }
 
 async function get() {
