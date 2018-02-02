@@ -48,8 +48,24 @@ program.command('setup')
 
 program.command('start')
   .description('start the Corsica server')
-  .option('-b, --background', 'run Corscia in the background')
+  .option('-b, --background', 'run Corsica in the background')
   .action(helpful(async function (options) {
+
+    if (options.background) {
+      await lifecycle.startInBackground();
+    } else {
+      await lifecycle.start();
+      console.log(style.info('Press Ctrl+C to exit.'));
+    }
+
+  }));
+
+program.command('restart')
+  .description('restart the Corsica server')
+  .option('-b, --background', 'run Corsica in the background')
+  .action(helpful(async function (options) {
+
+    await lifecycle.stop();
 
     if (options.background) {
       await lifecycle.startInBackground();
