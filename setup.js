@@ -1,10 +1,11 @@
-const read = require('./read');
-const styles = require('./styles');
 const fs = require('fs-extra');
 const path = require('path');
-const shell = require('./shell');
+
 const config = require('./config-cli');
 const serverConfig = require('./config-server');
+const read = require('./read');
+const shell = require('./shell');
+const styles = require('./styles');
 
 module.exports = async function setup () {
 

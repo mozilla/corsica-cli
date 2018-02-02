@@ -1,3 +1,4 @@
+const read = require('./read');
 const format = require('./format');
 const serverConfig = require('./config-server');
 const cliConfig = require('./config-cli');
@@ -6,6 +7,22 @@ const style = require('./styles');
 
 async function install(name) {
   let { installPath } = await cliConfig.get();
+
+  let packageInfo = await shell('npm', ['info', name, '--json'], { cwd: installPath, logging: false });
+  packageInfo = JSON.parse(packageInfo);
+
+  // check to see if the plugin has the keyword 'corsica'. Give a warning prompt if not.
+  if (packageInfo.keywords && packageInfo.keywords.indexOf('corsica') === -1) {
+    console.log(style.info(`Package ${style.notice(name)} is not tagged with '${style.notice('corsica')}'!`));
+    console.log('Please double-check the name of the plugin.\n');
+    let userIsSure = await read({
+      prompt: style.notice('Are you sure you want to install it? (yes/no)'),
+      default: 'no'
+    });
+    if (userIsSure !== 'yes' && userIsSure !== 'y') {
+      throw style.bad('Installation canceled.');
+    }
+  }
 
   await shell('npm', ['install', name], { cwd: installPath });
 
