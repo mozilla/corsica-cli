@@ -122,9 +122,13 @@ program.command('update')
 
     let { installPath } = await cliConfig.get();
 
-    console.log(style.info('Updating...'));
+    console.log(style.info('Updating Corsica and plugins...'));
 
     await shell('npm', ['update'], { cwd: installPath });
+
+    console.log(style.info('Updating corsica-cli...'));
+
+    await shell('npm', ['install', '-g', 'corsica-cli']);
 
     console.log(style.good('Done!'));
 
